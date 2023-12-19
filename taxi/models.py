@@ -40,8 +40,8 @@ class DriverSeat(Model):
 
 
 class Booking(Model):
-    first_name = CharField(max_length=255)
-    last_name = CharField(max_length=255)
+    first_name = CharField(max_length=255, null=True, blank=True)
+    last_name = CharField(max_length=255, null=True, blank=True)
     seat = ArrayField(JSONField())
     phone = CharField(max_length=255)
     user = ForeignKey('user.User', on_delete=CASCADE)

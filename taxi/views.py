@@ -14,7 +14,7 @@ class CarSearchAPIView(ListAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverModelSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['from_place', 'to_place']
+    search_fields = ['from_place', 'to_place', 'date']
     pagination_class = CustomPagination
 
     @swagger_auto_schema(
@@ -22,6 +22,8 @@ class CarSearchAPIView(ListAPIView):
             openapi.Parameter('from_place', openapi.IN_QUERY, description='Starting location',
                               type=openapi.TYPE_STRING),
             openapi.Parameter('to_place', openapi.IN_QUERY, description='Destination location',
+                              type=openapi.TYPE_STRING),
+            openapi.Parameter('date', openapi.IN_QUERY, description='Date of the trip',
                               type=openapi.TYPE_STRING),
         ],
         operation_description='Search for cars based on starting and destination locations.'
@@ -105,6 +107,7 @@ class BookingDetailAPIView(UpdateAPIView, DestroyAPIView):
            {
       "first_name": "Ali",
       "last_name": "Aliyev",
+      "phone": "123456789",
       "seat": [
         {"id": 1, "is_booked": true, "seat": 2},
         {"id": 3, "is_booked": true, "seat": 4}

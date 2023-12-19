@@ -60,7 +60,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ['id','first_name', 'last_name', 'seat', 'total_price']
+        fields = ['id','first_name', 'last_name', 'phone', 'seat', 'total_price']
         read_only_fields = ['total_price']
 
     def seat_info(self, seat_info, user):
@@ -88,6 +88,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.phone = validated_data.get('phone', instance.phone)
         instance.seat = seat_data
         instance.total_price = total_price
         instance.save()
