@@ -43,5 +43,6 @@ class Booking(Model):
     first_name = CharField(max_length=255)
     last_name = CharField(max_length=255)
     seat = ArrayField(JSONField())
+    phone = CharField(max_length=255)
     user = ForeignKey('user.User', on_delete=CASCADE)
     total_price = DecimalField(max_digits=10, decimal_places=2)
