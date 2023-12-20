@@ -1,6 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import UpdateAPIView, DestroyAPIView, ListCreateAPIView, ListAPIView, CreateAPIView
 
@@ -19,25 +20,13 @@ class CarSearchAPIView(ListAPIView):
     filterset_class = DriverFilter
     pagination_class = CustomPagination
 
-    # @swagger_auto_schema(
-    #     manual_parameters=[
-    #         openapi.Parameter('from_place', openapi.IN_QUERY, description='Starting location',
-    #                           type=openapi.TYPE_STRING),
-    #         openapi.Parameter('to_place', openapi.IN_QUERY, description='Destination location',
-    #                           type=openapi.TYPE_STRING),
-    #         openapi.Parameter('date', openapi.IN_QUERY, description='Date of the trip',
-    #                           type=openapi.TYPE_STRING),
-    #     ],
-    #     operation_description='Search for cars based on starting and destination locations.'
-    # )
-    # def get(self, request, *args, **kwargs):
-    #     return super().get(request, *args, **kwargs)
 
 
-# Seat List
 class SeatCreateAPIView(ListAPIView):
     queryset = Seat.objects.all()
     serializer_class = SeatModelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -46,6 +35,8 @@ class SeatCreateAPIView(ListAPIView):
 class DriverCreateAPIView(ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverModelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
@@ -76,14 +67,17 @@ class DriverDetailAPIView(UpdateAPIView, DestroyAPIView):
       ]
     }
     """
-
     queryset = Driver.objects.all()
     serializer_class = DriverModelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
 
 
 # Booking Post
 
 class BookingCreateAPIView(CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     """
            {
       "first_name": "Ali",
@@ -98,6 +92,7 @@ class BookingCreateAPIView(CreateAPIView):
 
 
 class MyBookingsAPIView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = BookingSerializer
 
     def get_queryset(self):
@@ -105,6 +100,8 @@ class MyBookingsAPIView(ListAPIView):
 
 
 class BookingDetailAPIView(UpdateAPIView, DestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     """
            {
       "first_name": "Ali",
