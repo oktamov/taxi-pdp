@@ -60,7 +60,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booking
-        fields = ['id','first_name', 'last_name', 'phone', 'seat', 'total_price']
+        fields = ['id', 'first_name', 'last_name', 'phone', 'seat', 'total_price']
         read_only_fields = ['total_price']
 
     def seat_info(self, seat_info, user):

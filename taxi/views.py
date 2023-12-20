@@ -1,8 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import UpdateAPIView, DestroyAPIView, ListCreateAPIView, ListAPIView, CreateAPIView
 
+from .filters import DriverFilter
 from .models import Driver, Seat, Booking
 from .pagination import CustomPagination
 from .serializers import SeatModelSerializer, DriverModelSerializer, BookingSerializer
@@ -13,23 +15,23 @@ from .serializers import SeatModelSerializer, DriverModelSerializer, BookingSeri
 class CarSearchAPIView(ListAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverModelSerializer
-    filter_backends = [SearchFilter]
-    search_fields = ['from_place', 'to_place', 'date']
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = DriverFilter
     pagination_class = CustomPagination
 
-    @swagger_auto_schema(
-        manual_parameters=[
-            openapi.Parameter('from_place', openapi.IN_QUERY, description='Starting location',
-                              type=openapi.TYPE_STRING),
-            openapi.Parameter('to_place', openapi.IN_QUERY, description='Destination location',
-                              type=openapi.TYPE_STRING),
-            openapi.Parameter('date', openapi.IN_QUERY, description='Date of the trip',
-                              type=openapi.TYPE_STRING),
-        ],
-        operation_description='Search for cars based on starting and destination locations.'
-    )
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    # @swagger_auto_schema(
+    #     manual_parameters=[
+    #         openapi.Parameter('from_place', openapi.IN_QUERY, description='Starting location',
+    #                           type=openapi.TYPE_STRING),
+    #         openapi.Parameter('to_place', openapi.IN_QUERY, description='Destination location',
+    #                           type=openapi.TYPE_STRING),
+    #         openapi.Parameter('date', openapi.IN_QUERY, description='Date of the trip',
+    #                           type=openapi.TYPE_STRING),
+    #     ],
+    #     operation_description='Search for cars based on starting and destination locations.'
+    # )
+    # def get(self, request, *args, **kwargs):
+    #     return super().get(request, *args, **kwargs)
 
 
 # Seat List
