@@ -37,8 +37,6 @@ class UserLoginSerializer(serializers.Serializer):
 
         refresh = RefreshToken.for_user(user)
         attrs["tokens"] = {"access": str(refresh.access_token), "refresh": str(refresh)}
-
-        attrs["user"] = user
         return attrs
 
 

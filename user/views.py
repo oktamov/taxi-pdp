@@ -28,13 +28,8 @@ class UserLoginAPIView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        user = serializer.validated_data["user"]
-        login(request, user)
         tokens = serializer.validated_data["tokens"]
-        user_data = UserSerializer(user).data
-
-        response_data = {"tokens": tokens, "user": user_data}
+        response_data = {"tokens": tokens}
 
         return Response(response_data)
 
@@ -49,4 +44,4 @@ class SendVerificationCodeView(generics.CreateAPIView):
         phone_number = serializer.validated_data.get("phone_number")
         code = 1234  # send_verification_code(phone_number)
 
-        return Response({phone_number: code}, status=status.HTTP_201_CREATED)
+        return Response({"phone": phone_number, "code": code}, status=status.HTTP_201_CREATED)
